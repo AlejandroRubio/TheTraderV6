@@ -66,6 +66,37 @@ namespace TheTrader.Utilidades
             return salida;
         }
 
+        public static String FormateADoubleAnchoFijoTotal(String s)
+        {
+
+
+
+            int ancho = 4;
+            string[] words;
+
+            if (!s.Contains(".") && !s.Contains(","))
+            {
+                s = s + ".0";
+            }
+
+            if (s.Contains("."))
+                words = s.Split('.');
+            else
+                words = s.Split(',');
+
+
+            int anchodelincio = words.Length;
+            String salida = words[0];
+
+            for (int x = 0; x < ancho - anchodelincio; x++)
+            {
+                salida = " " + salida;
+            }
+
+            salida = salida + "." + words[1];
+            return salida;
+        }
+
         public static String FormateADoubleAnchoFijo(float f)
         {
 

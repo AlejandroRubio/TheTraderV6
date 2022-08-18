@@ -89,13 +89,13 @@ namespace TheTrader.Modelo
                     Console.Write("| " + ImpresionBaseServicio.FormateAStringAAnchoFijo(accion.NumeroAccionesRestantes.ToString(), 15));
                     Console.Write("| " + ImpresionBaseServicio.FormateAStringAAnchoFijo(ImpresionBaseServicio.FormateADoubleAnchoFijo(accion.ValorTotalActual.ToString()), 10));
                     Console.Write("\n");
-                    total += accion.ValorTotalActual;
+                    total = total+ Math.Round(accion.ValorTotalActual,2);
                 }
 
             }
 
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(ImpresionBaseServicio.FormateAStringAAnchoFijo("                                TOTAL:  " + ImpresionBaseServicio.FormateADoubleAnchoFijo(total.ToString()), 30));
+            Console.WriteLine(ImpresionBaseServicio.FormateAStringAAnchoFijo("                               TOTAL |  " + ImpresionBaseServicio.FormateADoubleAnchoFijoTotal(Math.Round(total,2).ToString()), 30));
 
 
 
