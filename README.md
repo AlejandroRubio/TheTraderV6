@@ -1,23 +1,7 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<!-- Improved compatibility of Subir al inicio link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
 
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -37,7 +21,7 @@
   <h3 align="center">The Trader App - V6</h3>
 
   <p align="center">
-    C# console application for Tactical Asset Management
+    C# Console app for Tactical Asset Management
     <br />
     <a href=""><strong>Explore the docs »</strong></a>
     <br />
@@ -54,7 +38,7 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Contenido</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -84,14 +68,14 @@
 ## Sobre el proyecto
 
 
-La aplicación desarrollada consiste en una aplicación de consola en .Net Core 6 para gestión de activos de renta variables (principalmente acciones, fondos y ETFs).
+El proyecto desarrollado consiste en una aplicación de consola en .Net Core 6 para gestión de activos de renta variables (principalmente acciones, fondos y ETFs).
 
 Entre las funcionalidad actualmente implementadas están:
 
 * Gestión de ventas y compras de activos (implemntado sobre una BD SQL Server que se debe configurar en la aplicación)
 * Cálculo del valor actual de la cartera
-    * Método 1: Web scrapping sobre Investing.com  
-    * Método 2: uso del API público de Alphavantage.co
+    * Método 1: Web scrapping sobre [Investing.com](https://www.investing.com/)
+    * Método 2: uso del API público de [Alphavantage.co](https://www.alphavantage.co/)
 * RoboAdvisor personalizado con alertas basadas en indicadores técnicos (principalmente MACD y momentum)
     * Sobre listado de acciones personalizado
     * Sobre los principales índices
@@ -99,9 +83,9 @@ Entre las funcionalidad actualmente implementadas están:
 Aparte de esta funcionalidades principales se han desarrollados otros métodos de testing y administración de la aplicación.
     
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
- <img src="Media/menu.png" alt="Logo" width="100%" >
+
 
 
 ### Stack
@@ -115,24 +99,25 @@ Aparte de esta funcionalidades principales se han desarrollados otros métodos d
 * [![Laravel][Laravel.com]][Laravel-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![JQuery][JQuery.com]][JQuery-url]
+* HTML Agility Pack Libraries
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Instalación local
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Los siguientes componentes son necesarios para la ejecución o desarrollo en local del proyecto:
 
-### Prerequisites
+* Visual Studio para la compilación y ejecución del proyecto (fichero .exe generable)
+* BD SQL Server local o remota
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+
+### Pre-requisitos
+
+* ASP.NET Core Runtime 6.0.X
+    * https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 
 ### Installation
 
@@ -152,40 +137,34 @@ _Below is an example of how you can instruct your audience on installing and set
    const API_KEY = 'ENTER YOUR API';
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Ejemplo de uso
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+ <img src="Media/menu.png" alt="Logo" width="100%" >
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
 <!-- ROADMAP -->
-## Roadmap
+## Roadmap 2022
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] Integración repositorio GitHub
+- [ ] Desarrollo de BD de gestión de cartera de fondos
+- [ ] Desarrollo de BD de gestión de cartera de ETFs
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+Listado de problemas a corregir [open issues](https://github.com/AlejandroRubio/TheTraderV6/issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Contribución al proyecto
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -198,7 +177,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
@@ -207,18 +186,18 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
 <!-- CONTACT -->
 ## Contact
 
-Alejandro Rubio - [@your_twitter](https://twitter.com/alexwanderlustx) - alejandro.rubio.ingeniero@gmail.com
+Alejandro Rubio - [@AlexWanderlustX](https://twitter.com/alexwanderlustx) - alejandro.rubio.ingeniero@gmail.com
 
 Project Link: [https://github.com/AlejandroRubio](https://github.com/AlejandroRubio)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 
@@ -236,7 +215,7 @@ Use this space to list resources you find helpful and would like to give credit 
 * [Font Awesome](https://fontawesome.com)
 * [React Icons](https://react-icons.github.io/react-icons/search)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
 
 

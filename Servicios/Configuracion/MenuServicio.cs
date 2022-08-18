@@ -45,7 +45,7 @@ namespace TheTrader.Servicios.Configuracion
             Console.WriteLine("|             OPCIONES PRINCIPALES                |");
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("---------------------------------------------------");
-            Console.WriteLine("|  1. Calcular cotización cartera acciones        |");
+            Console.WriteLine("|  1. Calcular valor cartera                      |");
             Console.WriteLine("|  2. Lanzar RoboAdvisor IBEX 35                  |");
             Console.WriteLine("|  3. Lanzar RoboAdvisor bolsa española completa  |");
             Console.WriteLine("|  4. Lanzar RoboAdvisor NASDAQ                   |");
