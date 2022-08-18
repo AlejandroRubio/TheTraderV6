@@ -121,7 +121,6 @@ Los siguientes componentes son necesarios para la ejecución o desarrollo en loc
 
 ### Instalación
 
-   ```
 
 <p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
