@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="Modelo\Calculadoras\" />
+    <Folder Include="DB_Scripts\" />
   </ItemGroup>
 
   <ItemGroup>
