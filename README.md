@@ -167,7 +167,7 @@ Don't forget to give the project a star! Thanks again!
 
 
 <!-- LICENSE -->
-## License
+## Licencia
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 

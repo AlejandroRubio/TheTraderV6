@@ -4,7 +4,8 @@
     enum RoboAdvisorTipoMercado
     {
         Ibex35,
-        BolsaEspañolaCompleta
+        BolsaEspañolaCompleta,
+        Nasdaq
     }
 
     enum AlertasTipos

@@ -15,9 +15,9 @@ IServiceProvider provider = serviceScope.ServiceProvider;
 var workerInstance = provider.GetRequiredService<Worker>();
 workerInstance.DoWork();
 
+//Inicialización carteras y ejecución menú
 DataSetCartera valoresEnCartera = new DataSetCartera();
 DataSetInvesting valoresInvesting = new DataSetInvesting();
-
 MenuServicio.EjecucionMenu(valoresEnCartera, valoresInvesting);
 
 Console.WriteLine("FIN DE LA EJECUCIÓN");

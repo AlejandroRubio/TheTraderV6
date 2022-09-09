@@ -14,7 +14,6 @@ namespace TheTrader.Servicios.Calculadora
     public class CalculadoraRentaVariableService
     {
 
-
         //DataPoints para los gráficos
         Dictionary<DateTime, double> valoresComprasEnCartera;
         Dictionary<DateTime, double> valoresTasacionCartera;
@@ -27,39 +26,44 @@ namespace TheTrader.Servicios.Calculadora
         private List<AccionUnidadCalculoModel> listadoMisAcciones;
 
 
+        /// <summary>
+        /// Constructor para instanciación de los objetos usados
+        /// </summary>
         public CalculadoraRentaVariableService()
         {
-
             informacionCotizaciones = new List<InfoCotizacionModel>();
             listadoMisAcciones = new List<AccionUnidadCalculoModel>();
-
             valoresComprasEnCartera = new Dictionary<DateTime, double>();
             valoresTasacionCartera = new Dictionary<DateTime, double>();
             valoresRentabilidadCartera = new Dictionary<DateTime, double>();
             valoresTotalDividendos = new Dictionary<DateTime, double>();
-
         }
 
+
         /// <summary>
-        /// MÉTODO ARRANCADOR:
-        /// 
+        /// Cálculo de la evolución de la cartera
+        /// Para ello se cálcula a partir de las operaciones de compra y venta
+        /// y los valores cargados en BBDD con los datos de Investing
         /// </summary>
         public void EjecutarCalculoHistoricoCartera()
         {
-
             //Obtener cotizaciones diarias de todos los valores operados
             ObtenerValoresCotizacionesSQL();
-
-            //Obtener historico invertidoJ
+            //Obtener historico invertido
             RealizaCalculoEvolucionCantidadInvertida();
-
-
-            TruncadoHistorico();
-            InsertaValoresEnBDD();
-            ActualizaDatosEnBBDD();
+            //Truncado de la tabla en BBDD
+            TruncarHistoricoRendimientosSQL();
+            //Insertado de los nuevos datos
+            BulkarHistoricosRendimientosSQL();
+            //Actualización 
+            ActualizarHistoricosRendimientosSQL();
         }
 
-        public static void TruncadoHistorico()
+
+        /// <summary>
+        /// Truncado de la tabla historico_rendimientos
+        /// </summary>
+        public static void TruncarHistoricoRendimientosSQL()
         {
             SqlConnection sqlConnection = new SqlConnection(BaseDatosBaseServicio.GetDatabaseConnection());
             sqlConnection.Open();
@@ -70,9 +74,11 @@ namespace TheTrader.Servicios.Calculadora
             sqlConnection.Close();
         }
 
-
-
-        public static void ActualizaDatosEnBBDD()
+        
+        /// <summary>
+        /// Actualizar el total de beneficio en la tabla de historico de rendimientos
+        /// </summary>
+        public static void ActualizarHistoricosRendimientosSQL()
         {
             SqlConnection sqlConnection = new SqlConnection(BaseDatosBaseServicio.GetDatabaseConnection());
             sqlConnection.Open();
@@ -84,9 +90,11 @@ namespace TheTrader.Servicios.Calculadora
         }
 
 
-        private void InsertaValoresEnBDD()
+        /// <summary>
+        /// Método para hacer el bulk de todos los dís calculados 
+        /// </summary>
+        private void BulkarHistoricosRendimientosSQL()
         {
-
             DataTable valores = new DataTable();
             valores.Columns.Add(new DataColumn("fecha", typeof(DateTime)));
             valores.Columns.Add(new DataColumn("total_invertido", typeof(decimal)));
@@ -98,7 +106,6 @@ namespace TheTrader.Servicios.Calculadora
                 DataRow dr = valores.NewRow();
                 dr["fecha"] = item.Key;
                 dr["total_invertido"] = item.Value;
-
                 double value = 0;
                 bool hasValue = valoresTasacionCartera.TryGetValue(item.Key, out value);
                 if (hasValue)
@@ -109,8 +116,6 @@ namespace TheTrader.Servicios.Calculadora
                 {
                     throw new Exception("ERROR");
                 }
-
-
                 dr["total_beneficio"] = 0;
                 valores.Rows.Add(dr);
             }
@@ -184,7 +189,6 @@ namespace TheTrader.Servicios.Calculadora
         /// </summary>
         public void RealizaCalculoEvolucionCantidadInvertida()
         {
-
             //obtenemos la información de todas las acciones operadas
             listadoMisAcciones = ObtenerInformeRentaVariableSQL();
 
@@ -197,8 +201,6 @@ namespace TheTrader.Servicios.Calculadora
             {
                 double cantidadInvertidadEnDiaX = 0;
                 double cantidadTasacionEnDiaX = 0;
-
-
                 foreach (AccionUnidadCalculoModel accion in listadoMisAcciones)
                 {
                     //si las fecha que estoy procesando esta entre la compra y la venta
@@ -214,7 +216,6 @@ namespace TheTrader.Servicios.Calculadora
                         {
                             throw new Exception("La accion " + accion.accion + " no tiene valor el día: " + dia);
                         }
-
                         cantidadTasacionEnDiaX += accion.num_acciones_compra * valorAFecha;
 
                     }

@@ -44,11 +44,11 @@ namespace TheTrader.Servicios.Configuracion
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("|             OPCIONES PRINCIPALES                |");
             Console.WriteLine("---------------------------------------------------");
-            Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("|  1. Calcular valor cartera                      |");
             Console.WriteLine("|  2. Lanzar RoboAdvisor IBEX 35                  |");
             Console.WriteLine("|  3. Lanzar RoboAdvisor bolsa española completa  |");
             Console.WriteLine("|  4. Lanzar RoboAdvisor NASDAQ                   |");
+            Console.WriteLine("|  5. Calculo historico cartera                   |");
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("|           OPCIONES DE ADMINISTRACIÓN            |");
             Console.WriteLine("---------------------------------------------------");
@@ -57,6 +57,8 @@ namespace TheTrader.Servicios.Configuracion
             Console.WriteLine("| 12. (A) Advantage Modulo                        |");
             Console.WriteLine("| 13. (A) Cargar CSVs de Investing                |");
             Console.WriteLine("---------------------------------------------------");
+            Console.WriteLine("|             OPCIONES DE TESTING                 |");
+            Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("| 20. (T) Batería pruebas sobre RoboAdvisor       |");
             Console.WriteLine("| 21. (T) Cargar cartera CSV a BD                 |");
             Console.WriteLine("| 22. (T) Cargar listado de valores de Investing  |");
@@ -64,8 +66,8 @@ namespace TheTrader.Servicios.Configuracion
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("|  0. Cerrar programa                             |");
             Console.WriteLine("---------------------------------------------------");
+            
             var result = Console.ReadLine();
-
             int enteroMenu = 0;
             try
             {
@@ -75,7 +77,6 @@ namespace TheTrader.Servicios.Configuracion
             {
                 enteroMenu = 0;
             }
-
             return enteroMenu;
         }
 
@@ -101,6 +102,16 @@ namespace TheTrader.Servicios.Configuracion
                         //RoboAdvisor Bolsa Española
                         RoboAdvisior españa = new RoboAdvisior(RoboAdvisorTipoMercado.BolsaEspañolaCompleta);
                         españa.EjecutarProcesadoDeRoboAdvisor();
+                        break;
+                    case 4:
+                        //RoboAdvisor Bolsa Española
+                        RoboAdvisior nasdaq = new RoboAdvisior(RoboAdvisorTipoMercado.Nasdaq);
+                        nasdaq.EjecutarProcesadoDeRoboAdvisor();
+                        break;
+                    case 5:
+                        //Calculo histórico de la cartera
+                        CalculadoraRentaVariableService calculadoraService = new CalculadoraRentaVariableService();
+                        calculadoraService.EjecutarCalculoHistoricoCartera();
                         break;
                     case 10:
                         //Generación CSV España
@@ -137,11 +148,7 @@ namespace TheTrader.Servicios.Configuracion
                         //ProcesamientoInvestingTest cliente = new ProcesamientoInvestingTest();
                         //cliente.PruebaHTTPClient();
                         break;
-                    case 99:
-                        //Calculo histórico de la cartera
-                        CalculadoraRentaVariableService calculadoraService = new CalculadoraRentaVariableService();
-                        calculadoraService.EjecutarCalculoHistoricoCartera();
-                        break;
+                   
                     case 0:
                         break;
                 }
