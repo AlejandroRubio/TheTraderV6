@@ -11,13 +11,37 @@ namespace TheTrader.Servicios.Scrapping
 
         const string clase = "'instrument-price_instrument-price'";
         const string clase2 = "'top bold inlineblock'";// ACTUALIZACION 20210712
+        const string clase3 = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
 
         public static InstrumentPrice ScrapearURLInvesting(string url)
         {
             //Captura contenido de la web 
             string urlResponse = WebCatcher.CapturaValores(url);
+            int contadorReintentos = 0;
             //Transformación del string con todo el HTML capturado al objeto
-            InstrumentPrice datosPrecio = ExtraerValoresDesdeHTML(urlResponse);
+            InstrumentPrice datosPrecio = null;
+            while (datosPrecio == null && ( contadorReintentos >= 0 && contadorReintentos<5 ))
+            {
+                try
+                {
+                    contadorReintentos++;
+                    datosPrecio = ExtraerValoresDesdeHTML(urlResponse);
+
+                }
+                catch
+                {        
+                    urlResponse = WebCatcher.CapturaValores(url);
+                }
+            }
+
+            if (datosPrecio == null) {
+                datosPrecio = ExtraerValoresDesdeHTMLClase3(urlResponse);
+                
+                List<string> listaCeros = new List<string>() { "0", "0", "0", "0", "0", "0"};
+                datosPrecio = new InstrumentPrice(listaCeros);
+                Console.WriteLine("\nError leyendo URL de: " + url);
+            }
+
             return datosPrecio;
         }
 
@@ -37,18 +61,54 @@ namespace TheTrader.Servicios.Scrapping
 
             //bug ocn paypal: multiplica por 100 todos los valores el propio HTML
             bool candidadoAQueHayaPilladoMiles = false;
-            if (IPIPdiv.Contains(".")) {
+            if (IPIPdiv.Contains("."))
+            {
                 candidadoAQueHayaPilladoMiles = true;
             }
 
             //Transformación de la cadena al objeto
             InstrumentPrice datosPrecio = TransformacionContenidoDelDIV(IPIPdiv);
-            if (candidadoAQueHayaPilladoMiles) {
+            if (candidadoAQueHayaPilladoMiles)
+            {
                 datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
                 datosPrecio.variacionPorcentaje = datosPrecio.variacionPorcentaje / 100;
                 datosPrecio.variacionPrecio = datosPrecio.variacionPrecio / 100;
             }
-            
+
+
+            return datosPrecio;
+        }
+
+        public static InstrumentPrice ExtraerValoresDesdeHTMLClase3(string urlResponse)
+        {
+            HtmlDocument htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(urlResponse);
+
+            //CON ESTO FUNCA
+            //string clase = "instrument-price_instrument-price__3uw25 instrument-price_instrument-price-lg__3ES-Q";
+            //HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[@class='"+ clase + "']");
+
+            //Selección del nodo
+            HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + clase3 + ")]");
+            string IPIPdiv = divContainer.First().InnerText;
+
+
+            //bug ocn paypal: multiplica por 100 todos los valores el propio HTML
+            bool candidadoAQueHayaPilladoMiles = false;
+            if (IPIPdiv.Contains("."))
+            {
+                candidadoAQueHayaPilladoMiles = true;
+            }
+
+            //Transformación de la cadena al objeto
+            InstrumentPrice datosPrecio = TransformacionContenidoDelDIV(IPIPdiv);
+            if (candidadoAQueHayaPilladoMiles)
+            {
+                datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
+                datosPrecio.variacionPorcentaje = datosPrecio.variacionPorcentaje / 100;
+                datosPrecio.variacionPrecio = datosPrecio.variacionPrecio / 100;
+            }
+
 
             return datosPrecio;
         }
@@ -80,7 +140,7 @@ namespace TheTrader.Servicios.Scrapping
 
                 //comento la linea de abajo ya que sino las varaciones no las pilla negativas
                 contenidoProcesado = contenidoProcesado.Replace("-", "#-");
-                
+
                 bueno = contenidoProcesado.Split("#").ToList();
 
             }
@@ -91,7 +151,7 @@ namespace TheTrader.Servicios.Scrapping
 
         }
 
- 
+
 
 
     }
