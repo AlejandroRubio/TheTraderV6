@@ -92,15 +92,10 @@ Aparte de esta funcionalidades principales se han desarrollados otros métodos d
 ### Stack
 
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-* HTML Agility Pack Libraries
+* .Net Core 6
+* SQL Server Database
+* HTML Agility Pack
+
 
 <p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
@@ -111,8 +106,10 @@ Aparte de esta funcionalidades principales se han desarrollados otros métodos d
 
 Los siguientes componentes son necesarios para la ejecución o desarrollo en local del proyecto:
 
-* Visual Studio para la compilación y ejecución del proyecto (fichero .exe generable)
-* BD SQL Server local o remota
+* Visual Studio 2022 para la compilación y ejecución del proyecto (fichero .exe generable)
+    * https://visualstudio.microsoft.com/es/vs/
+* Instancia SQL Server local o remota
+    * https://learn.microsoft.com/es-es/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
 
 
 ### Pre-requisitos
@@ -180,7 +177,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Alejandro Rubio - [@AlexWanderlustX](https://twitter.com/alexwanderlustx) 
 alejandro.rubio.ingeniero@gmail.com
 
-Prefil en GitHub: [https://github.com/AlejandroRubio](https://github.com/AlejandroRubio)
+Perfil en GitHub: [https://github.com/AlejandroRubio](https://github.com/AlejandroRubio)
 
 <p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
 
