@@ -234,6 +234,29 @@ namespace TheTrader.Controles.InvestingIntegracion
                 case "ITX":
                     nombre = "INDITEX";
                     break;
+                case "EUR_USD":
+                    nombre = "EUR_USD";
+                    break;
+                case "BAYGn":
+                    nombre = "BAYER"; 
+                    break;
+                case "FAE":
+                    nombre = "FAES";
+                    break;
+                case "MMM":
+                    nombre = "3M";
+                    break;
+                case "PEP":
+                    nombre = "PEPSICO";
+                    break;
+                case "PRIM":
+                    nombre = "PRIM";
+                    break;
+                case "REDE":
+                    nombre = "REDE";
+                    break;
+
+
 
 
 

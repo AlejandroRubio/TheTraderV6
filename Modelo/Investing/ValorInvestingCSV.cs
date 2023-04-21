@@ -47,6 +47,10 @@ namespace TheTrader.Modelo.Investing
                 return valor;
             }
 
+            if (valorString is null)
+            {
+                return 0;
+            }
 
             try
             {
