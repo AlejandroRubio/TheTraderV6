@@ -1,9 +1,5 @@
 ﻿using ServiceStack;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Text;
 using TheTrader.Configuracion;
 using TheTrader.Controles.BaseDeDatos;
 using TheTrader.Modelo.Investing;
@@ -18,19 +14,14 @@ namespace TheTrader.Controles.InvestingIntegracion
 
         public void EjecutaCargaFicheroInvesting()
         {
-
             DataTable listaValores = ProcesaFicheroCSVInvesting();
             InvestingDatabaseHelper.TruncadoValoresAcciones();
             InvestingDatabaseHelper.InsertDataUsingSqlBulkCopy(listaValores);
-
         }
+
 
         public DataTable ProcesaFicheroCSVInvesting()
         {
-
-            //Console.Write("Ruta del fichero:");
-            //string rutaFicheroCSV = Console.ReadLine();
-
             string rutaFicheroCSV = ConfiguracionAplicacion.ObtenerRutaGenerica("Ruta_DatosHistoricosInvesting");
             DataTable tbl = new DataTable();
             tbl.Columns.Add(new DataColumn("accion", typeof(String)));
@@ -41,42 +32,26 @@ namespace TheTrader.Controles.InvestingIntegracion
             tbl.Columns.Add(new DataColumn("precio_minimo", typeof(decimal)));
             tbl.Columns.Add(new DataColumn("volumen", typeof(decimal)));
             tbl.Columns.Add(new DataColumn("variacion", typeof(decimal)));
-
-
             string[] fileEntries = Directory.GetFiles(rutaFicheroCSV);
 
             //bucle por cada fichero leido de la carpeta
             foreach (string fileName in fileEntries)
             {
-                Console.WriteLine("Procesando: "+fileName);
-
+                Console.WriteLine("Procesando: " + fileName);
                 String contenidoFichero = LectorCSVServicio.GenericFileCSVReadString(fileName, true);
-
-                //contenidoFichero = contenidoFichero.Replace("\",\"", ";"); //elimino comillas
-                //contenidoFichero = contenidoFichero.Replace("\"", ""); //elimino comillas
-                //contenidoFichero = contenidoFichero.Replace(",", "."); //sustiuyo el punto para la fecha
-                //contenidoFichero = contenidoFichero.Replace(";", ","); //sustiuyo el punto para la fecha
-
-                
                 contenidoFichero = contenidoFichero.Replace("%", ""); //sustiuyo el punto para la fecha
                 contenidoFichero = contenidoFichero.Replace("M", ""); //sustiuyo el punto para la fecha
                 contenidoFichero = "fecha,precio_ultimo,precio_apertura,precio_maximo,precio_minimo,volumen,variacion\n" + contenidoFichero;
-
                 List<RAW_ValorInvestingCSV> listaRAW = contenidoFichero.FromCsv<List<RAW_ValorInvestingCSV>>();
                 List<ValorInvestingCSV> listaValores = new List<ValorInvestingCSV>();
 
-
-
-
                 foreach (RAW_ValorInvestingCSV raw in listaRAW)
                 {
-
-                    string sigla= fileName.Replace(rutaFicheroCSV + "\\Datos históricos ", "");
-                    sigla = sigla.Replace(".csv","");
+                    string sigla = fileName.Replace(rutaFicheroCSV + "\\Datos históricos ", "");
+                    sigla = sigla.Replace(".csv", "");
                     ValorInvestingCSV valor = new ValorInvestingCSV(MapeoSiglasAccionEnCSV(sigla));
                     valor.ConvertRAW(raw);
                     //listaValores.Add(valor);
-
 
                     DataRow dr = tbl.NewRow();
                     // dr["id"] = valor.id;
@@ -88,19 +63,9 @@ namespace TheTrader.Controles.InvestingIntegracion
                     dr["precio_minimo"] = valor.precio_minimo;
                     dr["volumen"] = valor.volumen;
                     dr["variacion"] = valor.variacion;
-
-
                     tbl.Rows.Add(dr);
-
-
                 }
             }
-
-
-
-
-
-
             return tbl;
         }
 
@@ -108,7 +73,6 @@ namespace TheTrader.Controles.InvestingIntegracion
         private static string MapeoSiglasAccionEnCSV(String sigla)
         {
             string nombre = "";
-
             switch (sigla)
             {
                 case "SAN":
@@ -234,11 +198,8 @@ namespace TheTrader.Controles.InvestingIntegracion
                 case "ITX":
                     nombre = "INDITEX";
                     break;
-                case "EUR_USD":
-                    nombre = "EUR_USD";
-                    break;
                 case "BAYGn":
-                    nombre = "BAYER"; 
+                    nombre = "BAYER";
                     break;
                 case "FAE":
                     nombre = "FAES";
@@ -255,21 +216,12 @@ namespace TheTrader.Controles.InvestingIntegracion
                 case "REDE":
                     nombre = "REDE";
                     break;
-
-
-
-
-
                 default:
                     throw new Exception("Valor no mapeado de acción: " + sigla);
-
             }
-
             return nombre;
         }
-
     }
-
 
 
 }

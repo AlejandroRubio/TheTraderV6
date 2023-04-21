@@ -36,7 +36,6 @@ namespace TheTrader.Servicios.Scrapping
 
             if (datosPrecio == null) {
                 datosPrecio = ExtraerValoresDesdeHTMLClase3(urlResponse);
-                
                 List<string> listaCeros = new List<string>() { "0", "0", "0", "0", "0", "0"};
                 datosPrecio = new InstrumentPrice(listaCeros);
                 Console.WriteLine("\nError leyendo URL de: " + url);
