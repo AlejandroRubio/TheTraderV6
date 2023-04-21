@@ -72,15 +72,16 @@ El proyecto desarrollado consiste en una aplicación de consola en .Net Core 6 p
 
 Entre las funcionalidad actualmente implementadas están:
 
-* Gestión de ventas y compras de activos (implemntado sobre una BD SQL Server que se debe configurar en la aplicación)
-* Cálculo del valor actual de la cartera
+* Gestión de ventas y compras de activos (implementación sobre base de datos SQL Server que se debe configurar de forma independiente).
+* Cálculo del valor actual de la cartera.
     * Método 1: Web scrapping sobre [Investing.com](https://www.investing.com/)
     * Método 2: uso del API público de [Alphavantage.co](https://www.alphavantage.co/)
-* RoboAdvisor personalizado con alertas basadas en indicadores técnicos (principalmente MACD y momentum)
-    * Sobre listado de acciones personalizado
-    * Sobre los principales índices
+* RoboAdvisor personalizado con alertas basadas en indicadores técnicos (principalmente MACD y momentum).
+    * Sobre listado de acciones personalizado.
+    * Sobre los principales índices.
 
 Aparte de esta funcionalidades principales se han desarrollados otros métodos de testing y administración de la aplicación.
+    * Carga de ficheros históricos CSV de Investing.
     
 
 <p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
@@ -118,8 +119,6 @@ Los siguientes componentes son necesarios para la ejecución o desarrollo en loc
 
 * ASP.NET Core Runtime 6.0.X
     * https://dotnet.microsoft.com/en-us/download/dotnet/6.0
-
-### Instalación
 
 
 <p align="right">(<a href="#readme-top">Subir al inicio</a>)</p>
