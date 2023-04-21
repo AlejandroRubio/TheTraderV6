@@ -21,7 +21,8 @@ namespace TheTrader.Controles
             int mercado = MenuSelecciónMercado();
             ConstantesServicio constantes = new ConstantesServicio();
 
-            switch(mercado){
+            switch (mercado)
+            {
                 case 1:
                     rutaHTMLEntrada = constantes.ObtenerSetting("Ruta_HTML_Espana");
                     rutaCSVSalida = constantes.ObtenerSetting("Ruta_CSV_Espana");
@@ -44,7 +45,8 @@ namespace TheTrader.Controles
         }
 
 
-        private int MenuSelecciónMercado() {
+        private int MenuSelecciónMercado()
+        {
 
 
             Console.WriteLine("--------------------------------------------------");
@@ -96,19 +98,22 @@ namespace TheTrader.Controles
                         listadoAcciones.Add(s.Trim());
                     }
                 }
-                else {
+                else
+                {
                     if (contador == saltoDeAccionEnAccion)
                     {
                         contador = 0;
                         listadoAcciones.Add(s.Trim());
                     }
                 }
-                
+
             }
 
 
-            foreach (string xml in listadoAcciones) {
-                if (xml.Length > 10) {
+            foreach (string xml in listadoAcciones)
+            {
+                if (xml.Length > 10)
+                {
                     int indice1 = 0;
                     int indice2 = 0;
                     int indice3 = 0;
@@ -131,13 +136,13 @@ namespace TheTrader.Controles
                     var splitado = nombre.Split(TEXTO4);
                     nombre = splitado[1];
 
-                    nombre = nombre.ToUpper().Replace(" ","_");
+                    nombre = nombre.ToUpper().Replace(" ", "_");
                     AccionInvesting accionI = new AccionInvesting(nombre, URL);
                     accionInvestingLista.Add(accionI);
                 }
 
 
-               
+
             }
 
 
@@ -146,9 +151,7 @@ namespace TheTrader.Controles
         public void GeneracionCSVAcciones()
         {
             ProcesaHTMLGenerico();
-
             List<String> contenidoSalida = new List<String>();
-
             foreach (AccionInvesting accion in accionInvestingLista)
             {
                 String contenido = String.Empty;
@@ -157,12 +160,8 @@ namespace TheTrader.Controles
                 contenido = contenido + accion.UrlAccionInvesting;
                 contenidoSalida.Add(contenido);
             }
-
-            throw new Exception("Se han cargado un total de "+ contenidoSalida.Count+" acciones para la generación del CSV nacional");
-
-
-            GestorFicherosPlanosServicio.EscribeContenidoAFichero(contenidoSalida , rutaCSVSalida);
-
-            }
+            Console.WriteLine("Se han cargado un total de " + contenidoSalida.Count + " acciones para la generación del CSV nacional");
+            GestorFicherosPlanosServicio.EscribeContenidoAFichero(contenidoSalida, rutaCSVSalida);
+        }
     }
 }

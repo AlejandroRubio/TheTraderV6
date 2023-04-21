@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Modelo\Calculadoras\" />
+    <Compile Remove="Modelo\Calculadoras\**" />
+    <EmbeddedResource Remove="Modelo\Calculadoras\**" />
+    <None Remove="Modelo\Calculadoras\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DB_Scripts\" />
   </ItemGroup>
 
