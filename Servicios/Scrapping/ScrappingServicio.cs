@@ -1,6 +1,5 @@
 ﻿using HtmlAgilityPack;
-using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using TheTrader.Controles.Web;
 using TheTrader.Modelo.Scrapping;
 
@@ -9,42 +8,74 @@ namespace TheTrader.Servicios.Scrapping
     public class ScrappingServicio
     {
 
-        const string clase = "'instrument-price_instrument-price'";
-        const string clase2 = "'top bold inlineblock'";// ACTUALIZACION 20210712
-        const string clase3 = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
+        //const string clase = "'instrument-price_instrument-price'";
+        //const string clase2 = "'top bold inlineblock'";// ACTUALIZACION 20210712
+        const string clase_valor = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
+        const string clase_variacion = "'text-negative-main rtl:force-ltr'";
 
         public static InstrumentPrice ScrapearURLInvesting(string url)
         {
             //Captura contenido de la web 
             string urlResponse = WebCatcher.CapturaValores(url);
+            InstrumentPrice datosPrecio = ProcesaHTMLInvesting(urlResponse);
+
+            return datosPrecio;
+        }
+
+        public static InstrumentPrice ProcesaHTMLInvesting(string urlResponse)
+        {
             int contadorReintentos = 0;
             //Transformación del string con todo el HTML capturado al objeto
-            InstrumentPrice datosPrecio = null;
-            while (datosPrecio == null && ( contadorReintentos >= 0 && contadorReintentos<5 ))
+            InstrumentPrice datosPrecio = new InstrumentPrice();
+            while (datosPrecio.ultimoValor == 0 && (contadorReintentos >= 0 && contadorReintentos < 2))
             {
+                float valorPrecio = 0;
+                float valorPorcentaje = 0;
+
+                contadorReintentos++;
                 try
                 {
-                    contadorReintentos++;
-                    datosPrecio = ExtraerValoresDesdeHTML(urlResponse);
-
+                    valorPrecio = ExtraerDivDesdeHTML(urlResponse, clase_valor);
+                    datosPrecio.ultimoValor = valorPrecio;
                 }
                 catch
-                {        
-                    urlResponse = WebCatcher.CapturaValores(url);
+                {
+                    Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
                 }
+
+
+
+                if (urlResponse.Contains(clase_variacion))
+                {
+                    try
+                    {
+                        valorPorcentaje = ExtraerDivDesdeHTML(urlResponse, clase_variacion);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
+                    }
+                }
+
+
+
+
+
             }
 
-            if (datosPrecio == null) {
-                datosPrecio = ExtraerValoresDesdeHTMLClase3(urlResponse);
-                List<string> listaCeros = new List<string>() { "0", "0", "0", "0", "0", "0"};
+            if (datosPrecio == null)
+            {
+                //datosPrecio = ExtraerValoresDesdeHTMLClase3(urlResponse);
+                List<string> listaCeros = new List<string>() { "0", "0", "0", "0", "0", "0" };
                 datosPrecio = new InstrumentPrice(listaCeros);
-                Console.WriteLine("\nError leyendo URL de: " + url);
+                Console.WriteLine("\nError leyendo URL ");
             }
 
             return datosPrecio;
         }
 
-        public static InstrumentPrice ExtraerValoresDesdeHTML(string urlResponse)
+
+        public static float ExtraerDivDesdeHTML(string urlResponse, string claseAExtraer)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(urlResponse);
@@ -54,62 +85,22 @@ namespace TheTrader.Servicios.Scrapping
             //HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[@class='"+ clase + "']");
 
             //Selección del nodo
-            HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + clase + ")]");
+            HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + claseAExtraer + ")]");
             string IPIPdiv = divContainer.First().InnerText;
 
 
             //bug ocn paypal: multiplica por 100 todos los valores el propio HTML
-            bool candidadoAQueHayaPilladoMiles = false;
+            float valor = 0;
             if (IPIPdiv.Contains("."))
             {
-                candidadoAQueHayaPilladoMiles = true;
+                valor = float.Parse(IPIPdiv.Replace(',', '.'), CultureInfo.InvariantCulture.NumberFormat);
             }
-
-            //Transformación de la cadena al objeto
-            InstrumentPrice datosPrecio = TransformacionContenidoDelDIV(IPIPdiv);
-            if (candidadoAQueHayaPilladoMiles)
+            else
             {
-                datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
-                datosPrecio.variacionPorcentaje = datosPrecio.variacionPorcentaje / 100;
-                datosPrecio.variacionPrecio = datosPrecio.variacionPrecio / 100;
+                valor = float.Parse(IPIPdiv.Replace(',', '.'), CultureInfo.InvariantCulture.NumberFormat);
             }
 
-
-            return datosPrecio;
-        }
-
-        public static InstrumentPrice ExtraerValoresDesdeHTMLClase3(string urlResponse)
-        {
-            HtmlDocument htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(urlResponse);
-
-            //CON ESTO FUNCA
-            //string clase = "instrument-price_instrument-price__3uw25 instrument-price_instrument-price-lg__3ES-Q";
-            //HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[@class='"+ clase + "']");
-
-            //Selección del nodo
-            HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + clase3 + ")]");
-            string IPIPdiv = divContainer.First().InnerText;
-
-
-            //bug ocn paypal: multiplica por 100 todos los valores el propio HTML
-            bool candidadoAQueHayaPilladoMiles = false;
-            if (IPIPdiv.Contains("."))
-            {
-                candidadoAQueHayaPilladoMiles = true;
-            }
-
-            //Transformación de la cadena al objeto
-            InstrumentPrice datosPrecio = TransformacionContenidoDelDIV(IPIPdiv);
-            if (candidadoAQueHayaPilladoMiles)
-            {
-                datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
-                datosPrecio.variacionPorcentaje = datosPrecio.variacionPorcentaje / 100;
-                datosPrecio.variacionPrecio = datosPrecio.variacionPrecio / 100;
-            }
-
-
-            return datosPrecio;
+            return valor;
         }
 
         private static InstrumentPrice TransformacionContenidoDelDIV(string IPIPdiv)
@@ -142,6 +133,19 @@ namespace TheTrader.Servicios.Scrapping
 
                 bueno = contenidoProcesado.Split("#").ToList();
 
+            }
+
+            try
+            {
+                float valorPrecio = float.Parse(IPIPdiv.Replace(',', '.'), CultureInfo.InvariantCulture.NumberFormat);
+                InstrumentPrice valorUnico = new InstrumentPrice();
+                valorUnico.ultimoValor = valorPrecio;
+                return valorUnico;
+
+            }
+            catch
+            {
+                Console.WriteLine("ERROR en el scrapping");
             }
 
 

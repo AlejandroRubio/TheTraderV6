@@ -6,18 +6,21 @@ namespace TheTrader.Modelo.Scrapping
 {
     public class InstrumentPrice
     {
-       public string instrumentPriceLast;
-       public string instrumentPriceChange;
-       public string instrumentPriceChangePercent;
+        public string instrumentPriceLast;
+        public string instrumentPriceChange;
+        public string instrumentPriceChangePercent;
 
-       public double ultimoValor;
-       public double variacionPrecio;
-       public double variacionPorcentaje;
+        public double ultimoValor;
+        public double variacionPrecio;
+        public double variacionPorcentaje;
 
+        public InstrumentPrice() { }
 
-        public InstrumentPrice(List<string> valoresBrutos) {
+        public InstrumentPrice(List<string> valoresBrutos)
+        {
 
-            if (valoresBrutos.Count==3) {
+            if (valoresBrutos.Count == 3)
+            {
                 instrumentPriceLast = valoresBrutos[0];
                 instrumentPriceChange = valoresBrutos[1];
                 instrumentPriceChangePercent = valoresBrutos[2];
@@ -33,9 +36,10 @@ namespace TheTrader.Modelo.Scrapping
         }
 
 
-        private string PurificaString(string entrada) {
+        private string PurificaString(string entrada)
+        {
             string salida = entrada;
-            salida= salida.Replace("(", "");
+            salida = salida.Replace("(", "");
             salida = salida.Replace(")", "");
             salida = salida.Replace("%", "");
             return salida;

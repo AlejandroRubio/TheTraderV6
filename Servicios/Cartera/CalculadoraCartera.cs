@@ -135,10 +135,6 @@ namespace TheTrader.Controles
                         descargada = datosDeInvesting[encontrada.Nombre];
                     }
                     else {
-                        if (enCartera.Nombre.Equals("Microsoft")) {
-                            Console.Write("");
-                        }
-
                         descargada = valoresInvestingFiltrado.DescargaValoresAccion(encontrada);
                         datosDeInvesting.Add(encontrada.Nombre,descargada);
                     }

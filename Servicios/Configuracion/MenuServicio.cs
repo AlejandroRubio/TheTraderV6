@@ -6,6 +6,7 @@ using TheTrader.Controles.YahooFinances;
 using TheTrader.Modelo;
 using TheTrader.Modelo.RoboAdvisor;
 using TheTrader.Servicios.Calculadora;
+using TheTraderV6.UnitTesting;
 
 namespace TheTrader.Servicios.Configuracion
 {
@@ -147,13 +148,17 @@ namespace TheTrader.Servicios.Configuracion
                     case 23:
                         //ProcesamientoInvestingTest cliente = new ProcesamientoInvestingTest();
                         //cliente.PruebaHTTPClient();
+                        UnitTestService unit = new UnitTestService();
+                        unit.ExecuteUnitTests();
+                        var result = Console.ReadLine();
                         break;
                    
                     case 0:
                         break;
+
                 }
 
-
+              
             } while (opcionMenuSeleccionada != 0);
         }
 
