@@ -10,7 +10,10 @@ namespace TheTrader.Servicios.Scrapping
 
         //const string clase = "'instrument-price_instrument-price'";
         //const string clase2 = "'top bold inlineblock'";// ACTUALIZACION 20210712
-        const string clase_valor = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
+        //const string clase_valor = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
+        const string clase_valor = "'text-5xl/9 font-bold'"; //ACTUALIZACION 20231026
+
+
         const string clase_variacion = "'text-negative-main rtl:force-ltr'";
 
         public static InstrumentPrice ScrapearURLInvesting(string url)
