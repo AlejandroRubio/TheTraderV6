@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System.Globalization;
+using System.Xml.Linq;
 using TheTrader.Controles.Web;
 using TheTrader.Modelo.Scrapping;
 
@@ -12,9 +13,9 @@ namespace TheTrader.Servicios.Scrapping
         //const string clase2 = "'top bold inlineblock'";// ACTUALIZACION 20210712
         //const string clase_valor = "'text-5xl font-bold leading-9'";// ACTUALIZACION 20230221
         const string clase_valor = "'text-5xl/9 font-bold'"; //ACTUALIZACION 20231026
-
-
-        const string clase_variacion = "'text-negative-main rtl:force-ltr'";
+        //const string clase_variacion = "'text-negative-main rtl:force-ltr'"; //ACTUALIZACION 20231031
+        const string clase_variacion_porcentaje = "@data-test='instrument-price-change-percent'";
+        const string clase_variacion_precio = "@data-test='instrument-price-change'";
 
         public static InstrumentPrice ScrapearURLInvesting(string url)
         {
@@ -33,12 +34,13 @@ namespace TheTrader.Servicios.Scrapping
             while (datosPrecio.ultimoValor == 0 && (contadorReintentos >= 0 && contadorReintentos < 2))
             {
                 float valorPrecio = 0;
-                float valorPorcentaje = 0;
+                float valorVariacionPorcentaje = 0;
+                float valorVariacionPrecio = 0;
 
                 contadorReintentos++;
                 try
                 {
-                    valorPrecio = ExtraerDivDesdeHTML(urlResponse, clase_valor);
+                    valorPrecio = ExtraerElementoDesdeHTML("div", urlResponse, clase_valor);
                     datosPrecio.ultimoValor = valorPrecio;
                 }
                 catch
@@ -46,22 +48,15 @@ namespace TheTrader.Servicios.Scrapping
                     Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
                 }
 
-
-
-                if (urlResponse.Contains(clase_variacion))
+                try
                 {
-                    try
-                    {
-                        valorPorcentaje = ExtraerDivDesdeHTML(urlResponse, clase_variacion);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
-                    }
+                    datosPrecio.variacionPorcentaje = ExtraerElementoDesdeHTML("span", urlResponse, clase_variacion_porcentaje);
+                    datosPrecio.variacionPrecio = ExtraerElementoDesdeHTML("span", urlResponse, clase_variacion_precio);
                 }
-
-
-
+                catch
+                {
+                    Console.WriteLine("\nError recuperando variación ");
+                }
 
 
             }
@@ -77,8 +72,8 @@ namespace TheTrader.Servicios.Scrapping
             return datosPrecio;
         }
 
-
-        public static float ExtraerDivDesdeHTML(string urlResponse, string claseAExtraer)
+        //tipo_elemento div o span
+        public static float ExtraerElementoDesdeHTML(string tipo_elemento, string urlResponse, string claseAExtraer)
         {
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(urlResponse);
@@ -88,8 +83,22 @@ namespace TheTrader.Servicios.Scrapping
             //HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[@class='"+ clase + "']");
 
             //Selección del nodo
-            HtmlNodeCollection divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + claseAExtraer + ")]");
+            HtmlNodeCollection divContainer = null;
+
+            if (tipo_elemento.Equals("div"))
+            {
+                divContainer = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, " + claseAExtraer + ")]");
+            }
+
+            if (tipo_elemento.Equals("span"))
+            {
+                divContainer = htmlDoc.DocumentNode.SelectNodes("//span[" + claseAExtraer + "]");
+            }
+
             string IPIPdiv = divContainer.First().InnerText;
+            //tratamiento adicional
+            IPIPdiv = IPIPdiv.Replace("(", "").Replace(")", "");
+            IPIPdiv = IPIPdiv.Replace("%", "");
 
 
             //bug ocn paypal: multiplica por 100 todos los valores el propio HTML
@@ -105,6 +114,8 @@ namespace TheTrader.Servicios.Scrapping
 
             return valor;
         }
+
+
 
         private static InstrumentPrice TransformacionContenidoDelDIV(string IPIPdiv)
         {
