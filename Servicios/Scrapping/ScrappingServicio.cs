@@ -16,6 +16,9 @@ namespace TheTrader.Servicios.Scrapping
         //const string clase_variacion = "'text-negative-main rtl:force-ltr'"; //ACTUALIZACION 20231031
         const string clase_variacion_porcentaje = "@data-test='instrument-price-change-percent'";
         const string clase_variacion_precio = "@data-test='instrument-price-change'";
+        const string clase_valor_v2 = "@data-test='instrument-price-last'";
+        const string tag_libras = "Valores en <!-- --> <span class=\"ml-1.5 font-bold\">GBP</span>";
+
 
         public static InstrumentPrice ScrapearURLInvesting(string url)
         {
@@ -34,19 +37,50 @@ namespace TheTrader.Servicios.Scrapping
             while (datosPrecio.ultimoValor == 0 && (contadorReintentos >= 0 && contadorReintentos < 2))
             {
                 float valorPrecio = 0;
-                float valorVariacionPorcentaje = 0;
-                float valorVariacionPrecio = 0;
-
                 contadorReintentos++;
-                try
+                if (contadorReintentos == 1)
                 {
-                    valorPrecio = ExtraerElementoDesdeHTML("div", urlResponse, clase_valor);
-                    datosPrecio.ultimoValor = valorPrecio;
+                    try
+                    {
+                        valorPrecio = ExtraerElementoDesdeHTML("div", urlResponse, clase_valor);
+                        datosPrecio.ultimoValor = valorPrecio;
+
+                        int indexLibras = urlResponse.IndexOf(tag_libras);
+                        if (indexLibras > 0)
+                        {
+                            datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
+                        }
+
+                    }
+                    catch
+                    {
+                        Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
+                    }
                 }
-                catch
+                else
                 {
-                    Console.WriteLine("\nExcepcion críticoleyendo valor URL ");
+                    // Procesar accion inglesa
+
+                   
+                        int indexInicio = urlResponse.IndexOf("instrument-price-last");
+                        int indexFin = indexInicio + 20;
+                        string substring = urlResponse.Substring(indexInicio, 40);
+
+                        int indexInicio2 = substring.IndexOf("</div>");
+                        string datoLimpio = substring.Substring(23, indexInicio2 - 23);
+                        datosPrecio.ultimoValor = float.Parse(datoLimpio);
+
+                        int indexLibras = urlResponse.IndexOf(tag_libras);
+                        if (indexLibras > 0)
+                        {
+                            datosPrecio.ultimoValor = datosPrecio.ultimoValor / 100;
+                        }
+                    
+
+                    
+
                 }
+           
 
                 try
                 {
